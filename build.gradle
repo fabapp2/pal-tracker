@@ -1,4 +1,6 @@
 buildscript {
+
+
     ext {
         springBootVersion = "2.0.6.RELEASE"
     }
@@ -30,3 +32,11 @@ dependencies {
     // providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
+
+bootRun.environment([
+        "WELCOME_MESSAGE": "hello",
+])
+
+test.environment([
+        "WELCOME_MESSAGE": "Hello from test",
+])
