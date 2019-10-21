@@ -25,4 +25,8 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    // No lombbok support :(
+    // providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+    testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
