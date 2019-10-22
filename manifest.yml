@@ -6,5 +6,5 @@ applications:
       routes:
         - route: fab.apps.chicken.pal.pivotal.io
       env:
-        WELCOME_MESSAGE: Hello from the review environment
+        WELCOME_MESSAGE: Hello from Travis
         JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
