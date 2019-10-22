@@ -12,8 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = PalTrackerApplication.class, webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = PalTrackerApplication.class, webEnvironment = RANDOM_PORT, properties = "welcome.message=" + WelcomeApiTest.WELCOME_MESSAGE)
 public class WelcomeApiTest {
+
+    public static final String WELCOME_MESSAGE = "foo";
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -21,6 +23,6 @@ public class WelcomeApiTest {
     @Test
     public void exampleTest() {
         String body = this.restTemplate.getForObject("/", String.class);
-        assertThat(body).isEqualTo("Hello from test");
+        assertThat(body).isEqualTo(WELCOME_MESSAGE);
     }
 }

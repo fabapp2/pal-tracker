@@ -1,18 +1,11 @@
 package io.pivotal.pal.tracker;
 
-import io.pivotal.pal.tracker.*;
-import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -31,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InMemoryTimeEntryJpaRepositoryTest {
 
     @Autowired
-    InMemoryTimeEntryRepository repo;
+    TimeEntryRepository repo;
 
 //    @Autowired
 //    ApplicationContext applicationContext;
@@ -42,7 +35,7 @@ public class InMemoryTimeEntryJpaRepositoryTest {
 //    @Test
 //    public void foo(){
 //        System.out.println("YES");
-//        TimeEntryRepository bean = applicationContext.getBean(TimeEntryRepository.class);
+//        ExtendedTimeEntryRepository bean = applicationContext.getBean(ExtendedTimeEntryRepository.class);
 //        System.out.println(bean);
 //    }
 
