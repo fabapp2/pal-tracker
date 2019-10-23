@@ -19,9 +19,9 @@ public class PalTrackerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Long projectId = 1L,
+        Long projectId = 1L;
         Long userId = 2L;
-        LocalDate date LocalDate.now();
+        LocalDate date = LocalDate.now();
         int hours = 8;
 
         TimeEntry timeEntry = new TimeEntry(projectId, userId, date, hours);
