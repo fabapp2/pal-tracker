@@ -3,11 +3,13 @@ package io.pivotal.pal.tracker;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Objects;
 
 
 @Entity
+@Table(name = "time_entries")
 public class TimeEntry {
     @Id
     @GeneratedValue
