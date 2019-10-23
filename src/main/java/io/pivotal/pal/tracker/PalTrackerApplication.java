@@ -1,25 +1,30 @@
 package io.pivotal.pal.tracker;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import java.time.LocalDate;
 
 @SpringBootApplication
-//@ComponentScan
-public class PalTrackerApplication {
+public class PalTrackerApplication implements CommandLineRunner {
+
+    @Autowired
+    private TimeEntryRepository timeEntryRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(PalTrackerApplication.class);
     }
 
-//    @Bean
-//    ExtendedTimeEntryRepository timeEntryRepository() {
-//        return new InMemoryTimeEntryRepository();
-//    }
+    @Override
+    public void run(String... args) throws Exception {
+        Long projectId = 1L,
+        Long userId = 2L;
+        LocalDate date LocalDate.now();
+        int hours = 8;
+
+        TimeEntry timeEntry = new TimeEntry(projectId, userId, date, hours);
+        timeEntryRepository.create(timeEntry);
+    }
 }
