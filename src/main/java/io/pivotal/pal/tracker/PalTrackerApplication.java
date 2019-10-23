@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.time.LocalDate;
 
 @SpringBootApplication
-public class PalTrackerApplication implements CommandLineRunner {
+public class PalTrackerApplication /*implements CommandLineRunner */{
 
     @Autowired
     private TimeEntryRepository timeEntryRepository;
@@ -17,14 +17,14 @@ public class PalTrackerApplication implements CommandLineRunner {
         SpringApplication.run(PalTrackerApplication.class);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-        Long projectId = 1L;
-        Long userId = 2L;
-        LocalDate date = LocalDate.now();
-        int hours = 8;
-
-        TimeEntry timeEntry = new TimeEntry(projectId, userId, date, hours);
-        timeEntryRepository.create(timeEntry);
-    }
+//    @Override
+//    public void run(String... args) throws Exception {
+//        Long projectId = 1L;
+//        Long userId = 2L;
+//        LocalDate date = LocalDate.now();
+//        int hours = 8;
+//
+//        TimeEntry timeEntry = new TimeEntry(projectId, userId, date, hours);
+//        timeEntryRepository.create(timeEntry);
+//    }
 }
