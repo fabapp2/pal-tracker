@@ -1,17 +1,20 @@
 package io.pivotal.pal.tracker;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-//@Component
-public class TimeEntryRepositoryImpl implements
-    ExtendedTimeEntryRepository /*extends SimpleJpaRepository<TimeEntry, Long>*/ {
+@Repository
+@Profile("jdbc")
+public class TimeEntryJdbcRepositoryImpl implements
+        TimeEntryRepository /*extends SimpleJpaRepository<TimeEntry, Long>*/ {
 
 //    private final EntityManager entityManager;
-    @Autowired
-    private TimeEntryRepository timeEntryRepository;
+//    @Autowired
+//    private TimeEntryJdbcRepository timeEntryRepository;
 
 
     /*
@@ -38,20 +41,27 @@ public class TimeEntryRepositoryImpl implements
 //        );
 //
 //        timeEntries.put(id, newTimeEntry);
-        return timeEntryRepository.save(timeEntry);
+
+
+        return null; //timeEntryRepository.save(timeEntry);
     }
 
 
     public TimeEntry find(Long id) {
 //        return timeEntries.get(id);
+        /*
         Optional<TimeEntry> byId = timeEntryRepository.findById(id);
         return byId.orElse(null);
+
+         */
+        return null;
     }
 
 
     public List<TimeEntry> list() {
 //        return new ArrayList<>(timeEntries.values());
-        return timeEntryRepository.findAll();
+//        return timeEntryRepository.findAll();
+        return null;
     }
 
 
@@ -59,31 +69,32 @@ public class TimeEntryRepositoryImpl implements
 
     public TimeEntry update(Long id, TimeEntry timeEntry) {
 //        if (find(id) == null) return null;
-        boolean teExists = timeEntryRepository.existsById(id);
+/*        boolean teExists = timeEntryRepository.existsById(id);
         if(teExists) {
             // TODO: setting the id should be sufficient ?
             TimeEntry timeEntryCloned = createClone(id, timeEntry);
             return timeEntryRepository.save(timeEntryCloned);
-        }
+        }*/
         return null;
     }
 
 
     public void delete(Long id) {
 //        timeEntries.remove(id);
-        timeEntryRepository.deleteById(id);
+//        timeEntryRepository.deleteById(id);
     }
 
 
     private TimeEntry createClone(Long id, TimeEntry timeEntry) {
-        TimeEntry updatedEntry = new TimeEntry(
-                id,
-                timeEntry.getProjectId(),
-                timeEntry.getUserId(),
-                timeEntry.getDate(),
-                timeEntry.getHours()
-        );
-        return updatedEntry;
+//        TimeEntry updatedEntry = new TimeEntry(
+//                id,
+//                timeEntry.getProjectId(),
+//                timeEntry.getUserId(),
+//                timeEntry.getDate(),
+//                timeEntry.getHours()
+//        );
+//        return updatedEntry;
+        return null;
     }
 
 }

@@ -1,11 +1,12 @@
 package io.pivotal.pal.tracker;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@FixMethodOrder(MethodSorters.NAME_ASCENDING) // JUnit does noit guarantee anz execution order but order is important here (because of pk values we expect)
 //@Rollback(true) // thought that's the default ?!
 //@ComponentScan
+@ActiveProfiles("jdbc")
 public class InMemoryTimeEntryJpaRepositoryTest {
 
     @Autowired
@@ -110,7 +112,7 @@ public class InMemoryTimeEntryJpaRepositoryTest {
 
     @Test
     public void t6_update_MissingEntry() {
-       // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
+        // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         TimeEntry updatedEntry = repo.update(
                 1L,
@@ -121,7 +123,7 @@ public class InMemoryTimeEntryJpaRepositoryTest {
 
     @Test
     public void t7_delete() throws Exception {
-       //  InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
+        //  InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long projectId = 123L;
         long userId = 456L;
@@ -132,10 +134,7 @@ public class InMemoryTimeEntryJpaRepositoryTest {
     }
 
     @Test
-    @Ignore("Thwe database takes care of this!")
     public void t8_deleteKeepsTrackOfLatestIdProperly() {
-       //  InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
-
         long projectId = 123L;
         long userId = 456L;
         TimeEntry created = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
@@ -146,6 +145,6 @@ public class InMemoryTimeEntryJpaRepositoryTest {
 
         TimeEntry createdSecond = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
 
-        assertThat(createdSecond.getId()).isEqualTo(2);
+        assertThat(createdSecond.getId()).isEqualTo(created.getId() + 1);
     }
 }
