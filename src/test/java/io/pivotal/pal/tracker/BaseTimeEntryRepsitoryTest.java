@@ -4,9 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
@@ -15,31 +13,10 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-//@ContextConfiguration(classes = PalTrackerApplication.class ) // onlz required because package of tests differ from packages of prod code
-@DataJpaTest
-//@SpringBootTest
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING) // JUnit does noit guarantee anz execution order but order is important here (because of pk values we expect)
-//@Rollback(true) // thought that's the default ?!
-//@ComponentScan
-@ActiveProfiles("jdbc")
-public class InMemoryTimeEntryJpaRepositoryTest {
+public abstract class BaseTimeEntryRepsitoryTest {
 
     @Autowired
-    TimeEntryRepository repo;
-
-//    @Autowired
-//    ApplicationContext applicationContext;
-//
-//    @Autowired
-//    TimeEntryJpaRepository timeEntryJpaRepository;
-
-//    @Test
-//    public void foo(){
-//        System.out.println("YES");
-//        ExtendedTimeEntryRepository bean = applicationContext.getBean(ExtendedTimeEntryRepository.class);
-//        System.out.println(bean);
-//    }
+    private TimeEntryRepository repo;
 
     @Test
     public void t1_create() throws Exception {

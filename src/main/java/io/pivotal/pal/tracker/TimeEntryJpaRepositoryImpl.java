@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.List;
 import java.util.Optional;
 
-@Profile("jpa")
+@Profile("!jdbc")
 public class TimeEntryJpaRepositoryImpl implements
         TimeEntryRepository /*extends SimpleJpaRepository<TimeEntry, Long>*/ {
 

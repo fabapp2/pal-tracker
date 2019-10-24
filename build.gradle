@@ -28,6 +28,7 @@ repositories {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     compile("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    compile("org.springframework.boot:spring-boot-starter-data-jdbc:$springBootVersion")
 
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'

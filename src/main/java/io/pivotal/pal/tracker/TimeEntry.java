@@ -1,9 +1,6 @@
 package io.pivotal.pal.tracker;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -12,7 +9,7 @@ import java.util.Objects;
 @Table(name = "time_entries")
 public class TimeEntry {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id; // Long can be null and represent an unset pk whereas long would be 0 if not set which is a vaklid PK
     private Long projectId;
     private Long userId;
