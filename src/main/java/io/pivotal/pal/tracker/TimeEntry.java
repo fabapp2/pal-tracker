@@ -70,25 +70,6 @@ public class TimeEntry {
                 Objects.equals(date, timeEntry.date);
     }
 
-    /**
-     * using the id generated bz JPA in the equals() method might get you into problem as the field is not immutable anzymore then!
-     */
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        TimeEntry timeEntry = (TimeEntry) o;
-//
-//        if (id != timeEntry.id) return false;
-//        if (projectId != timeEntry.projectId) return false;
-//        if (! userId.equals(timeEntry.userId)) return false;
-//        if (hours != timeEntry.hours) return false;
-//        return date != null ? date.equals(timeEntry.date) : timeEntry.date == null;
-//    }
-
-
-
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));

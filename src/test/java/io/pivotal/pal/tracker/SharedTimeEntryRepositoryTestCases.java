@@ -1,27 +1,21 @@
 package io.pivotal.pal.tracker;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import java.time.LocalDate;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public abstract class BaseTimeEntryRepsitoryTest {
 
-    @Autowired
+public class SharedTimeEntryRepositoryTestCases {
+
     private TimeEntryRepository repo;
 
-    @Test
-    public void t1_create() throws Exception {
-        // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
+    public SharedTimeEntryRepositoryTestCases(TimeEntryRepository repo) {
+        this.repo = repo;
+    }
 
+    public void create() throws Exception {
         long projectId = 123L;
         long userId = 456L;
         TimeEntry createdTimeEntry = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
@@ -34,11 +28,8 @@ public abstract class BaseTimeEntryRepsitoryTest {
         assertThat(readEntry).isEqualTo(expected);
     }
 
-    @Test
-    @Rollback(true)
-    public void t2_find() throws Exception {
-        // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
-
+    
+    public void find() throws Exception {
         long projectId = 123L;
         long userId = 456L;
         TimeEntry timeEntry = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
@@ -49,8 +40,8 @@ public abstract class BaseTimeEntryRepsitoryTest {
         assertThat(readEntry).isEqualTo(expected);
     }
 
-    @Test
-    public void t3_find_MissingEntry() {
+    
+    public void find_MissingEntry() {
         // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
 
         long timeEntryId = 1L;
@@ -59,23 +50,19 @@ public abstract class BaseTimeEntryRepsitoryTest {
         assertThat(readEntry).isNull();
     }
 
-    @Test
-    public void t4_list() throws Exception {
-        // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
+    
+    public void list() throws Exception {
         TimeEntry timeEntry1 = repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
         TimeEntry timeEntry2 = repo.create(new TimeEntry(789L, 654L, LocalDate.parse("2017-01-07"), 4));
 
         List<TimeEntry> expected = asList(
                 timeEntry1, timeEntry2
-//                new TimeEntry(1L, 123L, 456L, LocalDate.parse("2017-01-08"), 8),
-//                new TimeEntry(2L, 789L, 654L, LocalDate.parse("2017-01-07"), 4)
         );
         assertThat(expected).containsExactlyInAnyOrderElementsOf(repo.list());
     }
 
-    @Test
-    public void t5_update() throws Exception {
-        // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
+    
+    public void update() throws Exception {
         TimeEntry created = repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
 
         TimeEntry updatedEntry = repo.update(
@@ -87,10 +74,8 @@ public abstract class BaseTimeEntryRepsitoryTest {
         assertThat(repo.find(created.getId())).isEqualTo(expected);
     }
 
-    @Test
-    public void t6_update_MissingEntry() {
-        // InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
-
+    
+    public void updaMissingEntry() {
         TimeEntry updatedEntry = repo.update(
                 1L,
                 new TimeEntry(321L, 654L, LocalDate.parse("2017-01-09"), 5));
@@ -98,10 +83,8 @@ public abstract class BaseTimeEntryRepsitoryTest {
         assertThat(updatedEntry).isNull();
     }
 
-    @Test
-    public void t7_delete() throws Exception {
-        //  InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
-
+    
+    public void delete() throws Exception {
         long projectId = 123L;
         long userId = 456L;
         TimeEntry created = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
@@ -110,14 +93,11 @@ public abstract class BaseTimeEntryRepsitoryTest {
         assertThat(repo.list()).isEmpty();
     }
 
-    @Test
-    public void t8_deleteKeepsTrackOfLatestIdProperly() {
+    
+    public void deleteKeepsTrackOfLatestIdProperly() {
         long projectId = 123L;
         long userId = 456L;
         TimeEntry created = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
-
-//        assertThat(created.getId()).isEqualTo(1);
-
         repo.delete(created.getId());
 
         TimeEntry createdSecond = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));

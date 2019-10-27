@@ -1,11 +1,14 @@
-package io.pivotal.pal.tracker;
+package io.pivotal.pal.tracker.jdbc;
 
+import io.pivotal.pal.tracker.TimeEntry;
+import io.pivotal.pal.tracker.TimeEntryRepository;
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -14,16 +17,16 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
 
-@Repository
+@Component
 @Profile("jdbc")
 public class TimeEntryJdbcRepositoryImpl implements
-        TimeEntryRepository  {
+        TimeEntryRepository {
 
     private static final String INSERT_SQL = "INSERT INTO time_entries (project_id, user_id, date, hours) VALUES (?,?,?,?)";
     private static final String UPDATE_SQL = "UPDATE time_entries SET project_id = ?, user_id = ?, date = ?, hours = ? WHERE id = ?";
     private static final String FIND_SQL = "SELECT * FROM time_entries WHERE ID=?";
     private static final String LIST_SQL = "SELECT * FROM time_entries";
-    public final String DELETE_SQL = "DELETE FROM time_entries WHERE ID = ?";
+    private static final String DELETE_SQL = "DELETE FROM time_entries WHERE ID = ?";
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<TimeEntry> rowMapper = (rs, rowNum) -> {
@@ -43,14 +46,14 @@ public class TimeEntryJdbcRepositoryImpl implements
 
     public TimeEntry create(TimeEntry timeEntry) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection ->  {
+        jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS);
-        ps.setLong(1, timeEntry.getProjectId());
+            ps.setLong(1, timeEntry.getProjectId());
             ps.setLong(2, timeEntry.getUserId());
             ps.setDate(3, Date.valueOf(timeEntry.getDate()));
             ps.setInt(4, timeEntry.getHours());
-        return ps;
-    }, keyHolder);
+            return ps;
+        }, keyHolder);
         timeEntry.setId((long) keyHolder.getKey());
         return timeEntry;
     }
@@ -60,7 +63,7 @@ public class TimeEntryJdbcRepositoryImpl implements
         try {
             TimeEntry timeEntry = jdbcTemplate.queryForObject(FIND_SQL, rowMapper, id);
             return timeEntry;
-        } catch(EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
@@ -71,10 +74,9 @@ public class TimeEntryJdbcRepositoryImpl implements
     }
 
 
-    // Question: why do we need to pass the id and do not take iot from the model ?
     public TimeEntry update(Long id, TimeEntry timeEntry) {
         TimeEntry timeEntryFound = find(id);
-        if(timeEntryFound != null) {
+        if (timeEntryFound != null) {
             TimeEntry timeEntryCloned = createClone(id, timeEntry);
             this.jdbcTemplate.update(UPDATE_SQL, timeEntry.getProjectId(), timeEntry.getUserId(), timeEntry.getDate(), timeEntry.getHours(), id);
             timeEntry.setId(id);

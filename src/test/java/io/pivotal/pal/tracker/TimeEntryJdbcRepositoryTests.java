@@ -1,27 +1,49 @@
 package io.pivotal.pal.tracker;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
-public class TimeEntryJpaRepositoryTest /*extends SharedTimeEntryRepositoryTestCases*/ {
+@DataJdbcTest
+@ActiveProfiles("jdbc")
+public class TimeEntryJdbcRepositoryTests /*extends SharedTimeEntryRepositoryTestCases*/ {
 
-    SharedTimeEntryRepositoryTestCases sharedTimeEntryRepositoryTestCases;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     private TimeEntryRepository repo;
 
+    private SharedTimeEntryRepositoryTestCases sharedTimeEntryRepositoryTestCases;
+
     @Before
     public void setup() {
+        initializeDatabase();
         sharedTimeEntryRepositoryTestCases = new SharedTimeEntryRepositoryTestCases(repo);
     }
+
+    private void initializeDatabase() {
+        jdbcTemplate.update("CREATE TABLE IF NOT EXISTS time_entries (\n" +
+                "  id         BIGINT(20) NOT NULL AUTO_INCREMENT,\n" +
+                "  project_id BIGINT(20),\n" +
+                "  user_id    BIGINT(20),\n" +
+                "  date       DATE,\n" +
+                "  hours      INT,\n" +
+                "\n" +
+                "  PRIMARY KEY (id)\n" +
+                ")");
+    }
+
 
     @Test
     public void create() throws Exception {
@@ -62,5 +84,4 @@ public class TimeEntryJpaRepositoryTest /*extends SharedTimeEntryRepositoryTestC
     public void deleteKeepsTrackOfLatestIdProperly() {
         sharedTimeEntryRepositoryTestCases.deleteKeepsTrackOfLatestIdProperly();
     }
-
 }
